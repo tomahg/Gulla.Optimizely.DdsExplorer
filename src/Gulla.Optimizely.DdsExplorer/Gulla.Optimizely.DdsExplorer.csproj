@@ -8,7 +8,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <!-- The one place the release version is set: package, assembly and file versions follow it,
          and the static assets are cache-busted by content hash (asp-append-version), not by it. -->
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <PackageId>Gulla.Optimizely.DdsExplorer</PackageId>
     <ProjectName>Gulla.Optimizely.DdsExplorer</ProjectName>
