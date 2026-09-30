@@ -1,0 +1,22 @@
+<Project>
+
+  <!--
+    Copies the module.config packaged with Gulla.Optimizely.DdsExplorer into the consuming
+    site's modules/_protected/Gulla.Optimizely.DdsExplorer/ folder. This registers the addon
+    as an Optimizely module with declared dependencies on the Shell and CMS modules, which is
+    what makes the shell chrome load on the explorer page.
+  -->
+
+  <Target Name="CopyGullaDdsExplorerModuleConfig"
+          BeforeTargets="BeforeBuild">
+    <PropertyGroup>
+      <_GullaDdsExplorerModuleConfigSource>$(MSBuildThisFileDirectory)..\contentFiles\any\any\modules\_protected\Gulla.Optimizely.DdsExplorer\module.config</_GullaDdsExplorerModuleConfigSource>
+      <_GullaDdsExplorerModuleConfigTarget>$(MSBuildProjectDirectory)\modules\_protected\Gulla.Optimizely.DdsExplorer\module.config</_GullaDdsExplorerModuleConfigTarget>
+    </PropertyGroup>
+    <Copy SourceFiles="$(_GullaDdsExplorerModuleConfigSource)"
+          DestinationFiles="$(_GullaDdsExplorerModuleConfigTarget)"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(_GullaDdsExplorerModuleConfigSource)')" />
+  </Target>
+
+</Project>

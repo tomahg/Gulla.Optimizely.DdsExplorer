@@ -1,0 +1,83 @@
+@model DdsExplorerViewModel
+@{
+    Layout = "_Layout";
+}
+<section id="dds-store-page">
+    <nav class="dds-breadcrumb"><a href="~/@Gulla.Optimizely.DdsExplorer.Controllers.DdsExplorerController.RoutePrefix">DDS Explorer</a> /</nav>
+
+    <div class="dds-store-header">
+        <h1 class="dds-page__title dds-page__title--store">
+            <span>@Model.StoreName</span>
+            @if (Model.IsSystemStore)
+            {
+                <span class="dds-badge dds-badge--system" title="This store appears to belong to Optimizely. Changing it can break the site.">System</span>
+            }
+        </h1>
+        <div class="dds-store-header__actions">
+            <button type="button" class="dds-button" id="dds-empty-store">Empty store</button>
+            <button type="button" class="dds-button dds-button--danger" id="dds-delete-store">Delete store</button>
+        </div>
+    </div>
+
+    <div id="dds-store-raw" class="dds-alert dds-alert--warning" hidden></div>
+    <div id="dds-store-error" class="dds-alert dds-alert--error" hidden></div>
+
+    <details class="dds-definition">
+        <summary>Definition <span id="dds-definition-summary" class="dds-muted"></span></summary>
+        <table class="dds-table dds-table--compact">
+            <thead>
+                <tr><th>Property</th><th>Type</th><th>Mapping</th><th>Editable</th></tr>
+            </thead>
+            <tbody id="dds-definition-rows"></tbody>
+        </table>
+    </details>
+
+    <div class="dds-list-header">
+        <h2 class="dds-list-header__title">Items <span id="dds-item-total" class="dds-muted"></span></h2>
+        <button type="button" class="dds-button dds-button--danger" id="dds-delete-selected" disabled>Delete selected</button>
+    </div>
+
+    <div class="dds-table-scroll">
+        <table class="dds-table" id="dds-item-table">
+            <thead id="dds-item-head"></thead>
+            <tbody id="dds-item-rows">
+                <tr class="dds-table__empty"><td>Loading…</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="dds-pager" id="dds-pager" hidden>
+        <button type="button" class="dds-button dds-button--small" id="dds-page-prev">‹ Previous</button>
+        <span id="dds-page-info"></span>
+        <button type="button" class="dds-button dds-button--small" id="dds-page-next">Next ›</button>
+    </div>
+</section>
+
+<dialog id="dds-item" class="dds-dialog dds-dialog--item">
+    <div class="dds-dialog__body">
+        <div class="dds-dialog__header">
+            <h2 class="dds-dialog__title">Item <code id="dds-item-id"></code></h2>
+            <button type="button" class="dds-button dds-button--small" id="dds-item-close" aria-label="Close">✕</button>
+        </div>
+
+        <div id="dds-item-warning" class="dds-alert dds-alert--warning" hidden>
+            <strong>Editing raw DDS data can corrupt it.</strong>
+            The code that owns this store expects its data in a particular shape. A value that is
+            valid for its type can still break that code — there is no undo, and the change takes
+            effect immediately.
+        </div>
+        <div id="dds-item-readonly-note" class="dds-alert dds-alert--info" hidden></div>
+        <div id="dds-item-errors" class="dds-alert dds-alert--error" hidden></div>
+
+        <pre id="dds-item-view" class="dds-json"></pre>
+        <textarea id="dds-item-editor" class="dds-json dds-json--editor" spellcheck="false" hidden></textarea>
+
+        <div class="dds-dialog__actions">
+            <button type="button" class="dds-button dds-button--danger" id="dds-item-delete">Delete item</button>
+            <span class="dds-dialog__spacer"></span>
+            <button type="button" class="dds-button" id="dds-item-edit">Edit</button>
+            <button type="button" class="dds-button" id="dds-item-cancel" hidden>Cancel</button>
+            <button type="button" class="dds-button dds-button--primary" id="dds-item-save" hidden>Save</button>
+        </div>
+    </div>
+</dialog>

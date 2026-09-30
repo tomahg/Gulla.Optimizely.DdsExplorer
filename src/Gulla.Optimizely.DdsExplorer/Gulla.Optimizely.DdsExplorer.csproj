@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- The one place the release version is set: package, assembly and file versions follow it,
+         and the static assets are cache-busted by content hash (asp-append-version), not by it. -->
+    <Version>1.0.0</Version>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <PackageId>Gulla.Optimizely.DdsExplorer</PackageId>
+    <ProjectName>Gulla.Optimizely.DdsExplorer</ProjectName>
+    <Title>Optimizely DDS Explorer</Title>
+    <Authors>Tomas Hensrud Gulla</Authors>
+    <Description>Browse, inspect, edit and delete Dynamic Data Store stores and items from the Settings area of Optimizely CMS 13.</Description>
+    <PackageTags>Optimizely Episerver DDS DynamicDataStore Admin</PackageTags>
+    <PackageProjectUrl>https://github.com/tomahg/Gulla.Optimizely.DdsExplorer/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tomahg/Gulla.Optimizely.DdsExplorer/</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>First release.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <!-- Package the module.config + MSBuild target so consuming sites get it copied to
+       modules/_protected/Gulla.Optimizely.DdsExplorer/ during build. Registering as an
+       Optimizely module with <moduleDependencies> on Shell and CMS is what puts the page
+       inside the CMS shell chrome. -->
+  <ItemGroup>
+    <!-- module.config is packed explicitly below. Left in the default Content glob it is ALSO
+         swept into content/ and contentFiles/any/net10.0/ with buildAction="Content", which
+         drops a stray module.config into the root of every consuming project. -->
+    <Content Remove="module.config" />
+    <None Include="module.config" Pack="true" PackagePath="contentFiles\any\any\modules\_protected\Gulla.Optimizely.DdsExplorer\module.config" />
+    <None Include="build\Gulla.Optimizely.DdsExplorer.targets" Pack="true" PackagePath="build\Gulla.Optimizely.DdsExplorer.targets" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Gulla.Optimizely.DdsExplorer.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPiServer.CMS.Core" Version="[13.1.1, 14.0.0)" />
+    <PackageReference Include="EPiServer.CMS.UI.Core" Version="[13.1.1, 14.0.0)" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,29 @@
+@model DdsExplorerViewModel
+@{
+    Layout = "_Layout";
+}
+<section id="dds-store-list-page">
+    <h1 class="dds-page__title">DDS Explorer</h1>
+    <p class="dds-page__lead">
+        Browse the Dynamic Data Store. Open a store to see its definition and items; items can be
+        viewed, edited and deleted, and whole stores emptied or deleted.
+    </p>
+
+    <div class="dds-list-header">
+        <h2 class="dds-list-header__title">Stores <span id="dds-store-count" class="dds-muted"></span></h2>
+        <input type="search" id="dds-store-filter" class="dds-input dds-input--search" placeholder="Filter by name" aria-label="Filter stores by name" />
+    </div>
+
+    <table class="dds-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th class="dds-table__num">Items</th>
+                <th class="dds-table__num">Properties</th>
+            </tr>
+        </thead>
+        <tbody id="dds-store-rows">
+            <tr class="dds-table__empty"><td colspan="3">Loading…</td></tr>
+        </tbody>
+    </table>
+</section>

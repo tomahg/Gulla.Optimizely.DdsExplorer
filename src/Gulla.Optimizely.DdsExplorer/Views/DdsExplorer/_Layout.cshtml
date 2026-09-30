@@ -1,0 +1,57 @@
+@using EPiServer.Framework.Web
+@using EPiServer.Framework.Web.Resources
+@using EPiServer.Shell.UI.WebComponents
+@inject IRequiredClientResourceList RequiredResources
+@model DdsExplorerViewModel
+@{
+    var root = Url.Content("~/" + Gulla.Optimizely.DdsExplorer.Controllers.DdsExplorerController.RoutePrefix);
+    RequiredResources.Require("epi.shell.ui");
+    RequiredResources.Require("epi-cms.widgets.base");
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@(Model.StoreName == null ? "DDS Explorer" : Model.StoreName + " – DDS Explorer")</title>
+    <link rel="stylesheet" href="~/_content/Gulla.Optimizely.DdsExplorer/dds-explorer.css" asp-append-version="true" />
+    <required-client-resources area="@RenderingTags.Header" />
+    @Html.Raw(Html.RegisterOptimizelyWebComponents())
+</head>
+<body class="dds-ui">
+    <platform-navigation />
+    <episerver-common-settings />
+    <platform-navigation-wrapper>
+        <div class="dds-page">
+            @RenderBody()
+        </div>
+
+        <dialog id="dds-confirm" class="dds-dialog dds-dialog--confirm">
+            <form method="dialog" class="dds-dialog__body">
+                <h2 class="dds-dialog__title" id="dds-confirm-title"></h2>
+                <div id="dds-confirm-message" class="dds-dialog__message"></div>
+                <label id="dds-confirm-typed-row" class="dds-dialog__typed" hidden>
+                    <span>Type <code id="dds-confirm-expected"></code> to confirm:</span>
+                    <input type="text" id="dds-confirm-input" class="dds-input" autocomplete="off" spellcheck="false" />
+                </label>
+                <div class="dds-dialog__actions">
+                    <button type="button" class="dds-button" id="dds-confirm-cancel">Cancel</button>
+                    <button type="button" class="dds-button dds-button--danger" id="dds-confirm-ok">Delete</button>
+                </div>
+            </form>
+        </dialog>
+    </platform-navigation-wrapper>
+
+    <script>
+        window.ddsExplorer = {
+            api: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(root + "/api")),
+            root: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(root)),
+            store: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.StoreName)),
+            isSystemStore: @(Model.IsSystemStore ? "true" : "false"),
+            antiforgeryHeader: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AntiforgeryHeaderName)),
+            antiforgeryToken: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AntiforgeryToken))
+        };
+    </script>
+    <script src="~/_content/Gulla.Optimizely.DdsExplorer/dds-explorer.js" asp-append-version="true"></script>
+    <required-client-resources area="@RenderingTags.Footer" />
+</body>
+</html>
